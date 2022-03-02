@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <title>Home</title>
+    <script src="/static.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+
+    <div class="container" id="myteam">
+
+        <h1 class="text-center m-4">Teams</h1>
+
+        <div class="input-group m-auto" style="max-width: 50%;">
+
+            <input type="text" class="form-control mb-5" id="searchInput" onkeyup="searchTeam(this.value)"
+                aria-describedby="basic-addon1" placeholder="Search By Team Name.....">
+        </div>
+
+        <div class="row border rounded  bg-light shadow-lg p-5 mb-5 bg-body rounded" id="teamHolder">
+
+
+            <div class="col-lg-4 text-center ">
+
+                <img class="bd-placeholder-img rounded-circle" width="140" height="140" src="/img/teamlogo/rcb.jpg"
+                    alt="rcb">
+
+                <h2 class="text-center">RCB</h2>
+
+                <p><a class="btn btn-secondary" href="teams.html">View Teams »</a></p>
+            </div>
+
+
+
+
+        </div>
+
+
+
+
+
+
+    </div>
+
+
+    <!-- *********************************************** -->
+    <div class="container " id="teamdetails">
+
+
+
+
+
+
+    </div>
+
+
+    <!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+    Launch static backdrop modal
+  </button> -->
+  
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body m-auto" id="playermodal">
+
+           
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+
+
+
+
+  </div>
+
+
+
+
+
+
+
+    <script>
+
+        var teamdetails = document.getElementById('teamdetails');
+        teamdetails.style.display = "none";
+        var myteam=document.getElementById('myteam');
+        var displayTeam = document.getElementById('teamHolder');
+        var getTeamdata = JSON.parse(localStorage.getItem("team_data"));
+        var finalTeamlist = "";
+        getTeamdata.forEach(element => {
+
+            finalTeamlist += `
+        <div class="col-lg-4 text-center team">
+               
+               <img   class="bd-placeholder-img rounded-circle" width="140" height="140" src="/img/teamlogo/${element.teamLogo}" alt="${element.teamLogo}">
+
+               <h2 class="text-center">${element.teamSortName}</h2>
+           
+               <p><a class="btn btn-light btn-hover" onClick="DeatailsPage(${element.team_no})">View Teams »</a></p>
+           </div>
+
+        `
+        });
+
+        displayTeam.innerHTML = finalTeamlist;
+
+
+        function searchTeam(searchValue) {
+
+            var filter, team
+            filter = searchValue.toUpperCase();
+            team = document.getElementsByClassName("team");
+
+            for (i = 0; i < team.length; i++) {
+                h2 = team[i].getElementsByTagName("h2")[0];
+                if (h2.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    team[i].style.display = "";
+                } else {
+                    team[i].style.display = "none";
+                }
+            }
+
+        }
+
+        function DeatailsPage(index) {
+
+            var teamdata = getTeamdata[index - 1];
+
+            teamdetails.innerHTML = `<h1 class="text-center m-4">Teams Details</h1>
+        <button type="button" class="btn btn-primary btn-lg mb-3"><a href="home.html"
+                class="text-decoration-none text-light">Back</a></button>
+
+        <div class="card mb-3 bg-light shadow-lg p-5 mb-5 bg-body rounded">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="/img/teamlogo/${teamdata.teamLogo}" class="img-fluid rounded-start rounded-circle" alt="${teamdata.teamLogo}"
+                        style="width:200px;height: 200px;">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h1 class="card-title">${teamdata.teamFullName}</h1>
+                        <p class="card-text">Player:${teamdata.totalPlayer}</p>
+                        <p class="card-text">Top Batsman:${teamdata.topBatsMan}</p>
+                        <p class="card-text">Top Bowler:${teamdata.topBolower}</p>
+                        <p class="card-text">Won Match:${teamdata.wonMatch}</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h1 class="text-center m-4">Player Name</h1>;
+
+        <div class="row bg-light shadow-lg p-5 mb-5 bg-body rounded" id="player">
+        </div>`;
+
+            var player = document.getElementById("player");
+            var playerdata = ""
+            teamdata.player.forEach(element => {
+                playerdata += `
+                            <div class="col-lg-4 text-center">
+
+                <img class="bd-placeholder-img rounded-circle" width="140" height="140" src="/img/player/${element.photo}"
+                    alt="rcb">
+
+                <h2 class="text-center">${element.name}</h2>
+
+                <p><a class="btn btn-secondary" onClick='playerDetails(${JSON.stringify(element)})' data-bs-toggle="modal" data-bs-target="#staticBackdrop">Details »</a></p>
+                </div>  `
+
+            });
+
+            player.innerHTML = playerdata;
+
+            myteam.style.display="none"
+            displayTeam.style.display = "none";
+            teamdetails.style.display = "Block";
+
+        }
+        
+        function playerDetails(player_record){
+            
+            playermodal=document.getElementById('playermodal');
+            playermodal.innerHTML=`
+            <div class="card" style="width: 100%;">
+                <img src="/img/player/${player_record.photo}" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">${player_record.name}</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">Team :${player_record.team}</li>
+                  <li class="list-group-item">Price :${player_record.price}</li>
+                  <li class="list-group-item">Role:${player_record.Role}</li>
+                  <li class="list-group-item">Status:${player_record.status}</li>
+                </ul>
+              
+              </div>
+
+            
+            
+            
+            `
+            
+            
+
+          
+        }
+
+
+    </script>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+</body>
+
+</html>

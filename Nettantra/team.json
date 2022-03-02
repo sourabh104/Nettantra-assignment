@@ -1,0 +1,32 @@
+[
+    {
+        "team_no":1,
+        "teamName":"Royal Challenges Banglore",
+        "teamLogo":"rcb.jpg",
+        "topBatsMan":"virat Kohil,Dhoni",
+        "topBolower":"tendhulkar",
+        "totalPlayer":20,
+        "wonMatch":5
+    },
+    {
+        "team_no":2,
+        "teamName":"Mumbai Indians",
+        "teamLogo":"mi.jpg",
+        "topBatsMan":"Rohit sarma",
+        "topBolower":"hardik pandia",
+        "totalPlayer":15,
+        "wonMatch":10
+
+    },
+    {
+        "team_no":3,
+        "teamName":"Chennai Super King",
+        "teamLogo":"csk.jpg",
+        "topBatsMan":"Dhoni",
+        "topBolower":"hardik pandia",
+        "totalPlayer":15,
+        "wonMatch":10
+
+    }
+
+]
